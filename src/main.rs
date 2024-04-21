@@ -23,6 +23,28 @@ extern fn render() {
         };
         draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
     };
+
+    let buttons = read_buttons();
+    draw_circle(
+        Point { x: 160, y: 100 },
+        TOUCH_RADIUS * 2,
+        button_style(buttons.a),
+    );
+    draw_circle(
+        Point { x: 190, y: 90 },
+        TOUCH_RADIUS * 2,
+        button_style(buttons.b),
+    );
+    draw_circle(
+        Point { x: 160, y: 70 },
+        TOUCH_RADIUS * 2,
+        button_style(buttons.x),
+    );
+    draw_circle(
+        Point { x: 190, y: 60 },
+        TOUCH_RADIUS * 2,
+        button_style(buttons.y),
+    );
 }
 
 fn draw_bg() {
@@ -33,4 +55,13 @@ fn draw_bg() {
         stroke_width: 2,
     };
     draw_circle(Point { x: 10, y: 10 }, PAD_RADIUS * 2, style);
+}
+
+fn button_style(btn: bool) -> Style {
+    let fill_color = if btn { Color::ACCENT } else { Color::NONE };
+    Style {
+        fill_color,
+        stroke_color: Color::DARK,
+        stroke_width: 2,
+    }
 }
