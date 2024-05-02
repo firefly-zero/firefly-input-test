@@ -12,3 +12,5 @@ dependencies = [
 [[package]]
 name = "firefly-rust"
 version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "101f164a3a72685a4598a40ccc30ebb60244b677e40c62034c138a92c5cd68ae"
