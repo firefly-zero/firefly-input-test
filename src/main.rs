@@ -17,7 +17,7 @@ extern fn render() {
             y: PAD_RADIUS - pad.y / 20,
         };
         let style = Style {
-            fill_color:   Color::Accent,
+            fill_color:   Color::DarkBlue,
             stroke_color: Color::None,
             stroke_width: 2,
         };
@@ -48,20 +48,20 @@ extern fn render() {
 }
 
 fn draw_bg() {
-    clear_screen(Color::Light);
+    clear_screen(Color::White);
     let style = Style {
         fill_color:   Color::None,
-        stroke_color: Color::Dark,
+        stroke_color: Color::DarkBlue,
         stroke_width: 2,
     };
     draw_circle(Point { x: 10, y: 10 }, PAD_RADIUS * 2, style);
 }
 
 fn button_style(btn: bool) -> Style {
-    let fill_color = if btn { Color::Accent } else { Color::None };
+    let fill_color = if btn { Color::DarkBlue } else { Color::None };
     Style {
         fill_color,
-        stroke_color: Color::Dark,
+        stroke_color: Color::DarkBlue,
         stroke_width: 2,
     }
 }
