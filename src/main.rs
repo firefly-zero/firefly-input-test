@@ -17,7 +17,7 @@ extern fn render() {
             y: PAD_RADIUS - pad.y / 20,
         };
         let style = Style {
-            fill_color:   Color::DarkBlue,
+            fill_color: Color::DarkBlue,
             stroke_color: Color::None,
             stroke_width: 2,
         };
@@ -50,7 +50,7 @@ extern fn render() {
 fn draw_bg() {
     clear_screen(Color::White);
     let style = Style {
-        fill_color:   Color::None,
+        fill_color: Color::None,
         stroke_color: Color::DarkBlue,
         stroke_width: 2,
     };
