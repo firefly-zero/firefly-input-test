@@ -11,7 +11,7 @@ const TOUCH_RADIUS: i32 = 10;
 extern fn render() {
     draw_bg();
 
-    if let Some(pad) = read_pad(Player::P0) {
+    if let Some(pad) = read_pad(Peer::COMBINED) {
         let touch_pos = Point {
             x: PAD_RADIUS + pad.x / 20,
             y: PAD_RADIUS - pad.y / 20,
@@ -24,7 +24,7 @@ extern fn render() {
         draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
     };
 
-    let buttons = read_buttons(Player::P0);
+    let buttons = read_buttons(Peer::COMBINED);
     draw_circle(
         Point { x: 160, y: 100 },
         TOUCH_RADIUS * 2,

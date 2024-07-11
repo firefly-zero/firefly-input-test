@@ -4,7 +4,7 @@ version = "0.1.2"
 edition = "2021"
 
 [dependencies]
-firefly-rust = { version = "0.2.2", default-features = false }
+firefly-rust = { path = "../firefly-rust", default-features = false }
 
 # https://github.com/johnthagen/min-sized-rust
 [profile.release]
