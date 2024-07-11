@@ -4,11 +4,13 @@ version = 3
 
 [[package]]
 name = "firefly-input-test"
-version = "0.1.2"
+version = "0.2.0"
 dependencies = [
  "firefly-rust",
 ]
 
 [[package]]
 name = "firefly-rust"
-version = "0.2.2"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6f3f67388e93ba7e2f926ec4501a57487a525eb3df9296edeb6c41f2afb83221"
