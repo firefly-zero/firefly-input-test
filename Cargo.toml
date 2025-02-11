@@ -5,7 +5,7 @@ rust-version = "1.80.0"
 edition = "2021"
 
 [dependencies]
-firefly-rust = { version = "0.3.0", default-features = false }
+firefly-rust = { version = "0.8.0", default-features = false }
 
 # https://github.com/johnthagen/min-sized-rust
 [profile.release]

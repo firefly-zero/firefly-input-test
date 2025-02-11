@@ -11,10 +11,10 @@ const ME_COLOR: Color = Color::DarkBlue;
 const PEER_COLOR: Color = Color::Blue;
 const COMBINED_COLOR: Color = Color::LightBlue;
 
-const A: Point = Point { x: 160, y: 100 };
-const B: Point = Point { x: 190, y: 90 };
-const X: Point = Point { x: 160, y: 70 };
-const Y: Point = Point { x: 190, y: 60 };
+const S: Point = Point { x: 160, y: 100 };
+const E: Point = Point { x: 190, y: 90 };
+const W: Point = Point { x: 160, y: 70 };
+const N: Point = Point { x: 190, y: 60 };
 
 #[no_mangle]
 extern fn render() {
@@ -64,17 +64,17 @@ fn draw_buttons() {
             stroke_color: Color::None,
             stroke_width: 2,
         };
-        if buttons.a {
-            draw_circle(A, TOUCH_RADIUS * 2, style)
+        if buttons.s {
+            draw_circle(S, TOUCH_RADIUS * 2, style)
         }
-        if buttons.b {
-            draw_circle(B, TOUCH_RADIUS * 2, style)
+        if buttons.e {
+            draw_circle(E, TOUCH_RADIUS * 2, style)
         }
-        if buttons.x {
-            draw_circle(X, TOUCH_RADIUS * 2, style)
+        if buttons.w {
+            draw_circle(W, TOUCH_RADIUS * 2, style)
         }
-        if buttons.y {
-            draw_circle(Y, TOUCH_RADIUS * 2, style)
+        if buttons.n {
+            draw_circle(N, TOUCH_RADIUS * 2, style)
         }
     }
 
@@ -88,17 +88,17 @@ fn draw_buttons() {
             stroke_color,
             stroke_width: 2,
         };
-        if buttons.a {
-            draw_circle(A, TOUCH_RADIUS * 2, style)
+        if buttons.s {
+            draw_circle(S, TOUCH_RADIUS * 2, style)
         }
-        if buttons.b {
-            draw_circle(B, TOUCH_RADIUS * 2, style)
+        if buttons.e {
+            draw_circle(E, TOUCH_RADIUS * 2, style)
         }
-        if buttons.x {
-            draw_circle(X, TOUCH_RADIUS * 2, style)
+        if buttons.w {
+            draw_circle(W, TOUCH_RADIUS * 2, style)
         }
-        if buttons.y {
-            draw_circle(Y, TOUCH_RADIUS * 2, style)
+        if buttons.n {
+            draw_circle(N, TOUCH_RADIUS * 2, style)
         }
     }
 }
@@ -117,8 +117,8 @@ fn draw_bg() {
         stroke_color: Color::Gray,
         stroke_width: 2,
     };
-    draw_circle(A, TOUCH_RADIUS * 2, style);
-    draw_circle(B, TOUCH_RADIUS * 2, style);
-    draw_circle(X, TOUCH_RADIUS * 2, style);
-    draw_circle(Y, TOUCH_RADIUS * 2, style);
+    draw_circle(S, TOUCH_RADIUS * 2, style);
+    draw_circle(E, TOUCH_RADIUS * 2, style);
+    draw_circle(W, TOUCH_RADIUS * 2, style);
+    draw_circle(N, TOUCH_RADIUS * 2, style);
 }
