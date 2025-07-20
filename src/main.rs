@@ -65,6 +65,29 @@ fn draw_touch(pad: Pad, style: Style) {
         y: PAD_RADIUS - pad.y / 20,
     };
     draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
+
+    let style = Style {
+        fill_color: Color::White,
+        stroke_color: Color::None,
+        stroke_width: 0,
+    };
+    let dpad = pad.as_dpad();
+    if dpad.left {
+        let point = touch_pos + Point::new(-1, TOUCH_RADIUS - 1);
+        draw_rect(point, Size::new(2, 2), style);
+    }
+    if dpad.right {
+        let point = touch_pos + Point::new(TOUCH_RADIUS * 2 - 1, TOUCH_RADIUS - 1);
+        draw_rect(point, Size::new(2, 2), style);
+    }
+    if dpad.up {
+        let point = touch_pos + Point::new(TOUCH_RADIUS - 1, -1);
+        draw_rect(point, Size::new(2, 2), style);
+    }
+    if dpad.down {
+        let point = touch_pos + Point::new(TOUCH_RADIUS - 1, TOUCH_RADIUS * 2 - 1);
+        draw_rect(point, Size::new(2, 2), style);
+    }
 }
 
 fn draw_buttons() {
