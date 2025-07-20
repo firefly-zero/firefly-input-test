@@ -38,31 +38,31 @@ fn draw_combined_pad() {
     let Some(pad) = read_pad(Peer::COMBINED) else {
         return;
     };
-    let touch_pos = Point {
-        x: PAD_RADIUS + pad.x / 20,
-        y: PAD_RADIUS - pad.y / 20,
-    };
     let style = Style {
         fill_color: COMBINED_COLOR,
         stroke_color: Color::None,
         stroke_width: 2,
     };
-    draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
+    draw_touch(pad, style);
 }
 
 fn draw_peer_pad(peer: Peer, is_me: bool) {
     let Some(pad) = read_pad(peer) else {
         return;
     };
-    let touch_pos = Point {
-        x: PAD_RADIUS + pad.x / 20,
-        y: PAD_RADIUS - pad.y / 20,
-    };
     let color = if is_me { ME_COLOR } else { PEER_COLOR };
     let style = Style {
         fill_color: Color::None,
         stroke_color: color,
         stroke_width: 2,
+    };
+    draw_touch(pad, style);
+}
+
+fn draw_touch(pad: Pad, style: Style) {
+    let touch_pos = Point {
+        x: PAD_RADIUS + pad.x / 20,
+        y: PAD_RADIUS - pad.y / 20,
     };
     draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
 }
