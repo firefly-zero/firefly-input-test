@@ -2,8 +2,6 @@
 #![no_main]
 use firefly_rust::*;
 
-pub const WIDTH: usize = 240;
-pub const HEIGHT: usize = 160;
 const PAD_RADIUS: i32 = 60;
 const TOUCH_RADIUS: i32 = 10;
 
@@ -11,10 +9,10 @@ const ME_COLOR: Color = Color::DarkGreen;
 const PEER_COLOR: Color = Color::Green;
 const COMBINED_COLOR: Color = Color::LightGreen;
 
-const S: Point = Point { x: 160, y: 100 };
-const E: Point = Point { x: 190, y: 90 };
-const W: Point = Point { x: 160, y: 70 };
-const N: Point = Point { x: 190, y: 60 };
+const S: Point = Point { x: 180, y: 95 };
+const E: Point = Point { x: 200, y: 75 };
+const W: Point = Point { x: 160, y: 75 };
+const N: Point = Point { x: 180, y: 55 };
 
 #[no_mangle]
 extern "C" fn render() {
@@ -148,6 +146,7 @@ fn draw_pad_bg() {
         stroke_color: Color::Black,
         stroke_width: 2,
     };
+    draw_circle(Point::new(11, 11), PAD_RADIUS * 2, style);
     draw_circle(Point::new(10, 10), PAD_RADIUS * 2, style);
 }
 
