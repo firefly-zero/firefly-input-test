@@ -7,9 +7,9 @@ pub const HEIGHT: usize = 160;
 const PAD_RADIUS: i32 = 60;
 const TOUCH_RADIUS: i32 = 10;
 
-const ME_COLOR: Color = Color::DarkBlue;
-const PEER_COLOR: Color = Color::Blue;
-const COMBINED_COLOR: Color = Color::LightBlue;
+const ME_COLOR: Color = Color::DarkGreen;
+const PEER_COLOR: Color = Color::Green;
+const COMBINED_COLOR: Color = Color::LightGreen;
 
 const S: Point = Point { x: 160, y: 100 };
 const E: Point = Point { x: 190, y: 90 };
@@ -145,7 +145,7 @@ fn draw_peer_buttons(peer: Peer, is_me: bool) {
 fn draw_pad_bg() {
     let style = Style {
         fill_color: Color::White,
-        stroke_color: Color::LightGray,
+        stroke_color: Color::Black,
         stroke_width: 2,
     };
     draw_circle(Point::new(10, 10), PAD_RADIUS * 2, style);
@@ -154,7 +154,7 @@ fn draw_pad_bg() {
 fn draw_buttons_bg() {
     let style = Style {
         fill_color: Color::None,
-        stroke_color: Color::Gray,
+        stroke_color: Color::Black,
         stroke_width: 2,
     };
     draw_circle(S, TOUCH_RADIUS * 2, style);
