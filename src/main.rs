@@ -1,5 +1,6 @@
 #![no_std]
 #![no_main]
+#![expect(static_mut_refs)]
 use firefly_rust::*;
 
 const PAD_RADIUS: i32 = 60;
@@ -13,6 +14,17 @@ const S: Point = Point { x: 180, y: 95 };
 const E: Point = Point { x: 200, y: 75 };
 const W: Point = Point { x: 160, y: 75 };
 const N: Point = Point { x: 180, y: 55 };
+
+static mut FONT_BUF: [u8; 871] = [0; 871];
+static mut FONT: Option<File<'static>> = None;
+
+#[no_mangle]
+extern "C" fn boot() {
+    unsafe {
+        let file = load_file("font", &mut FONT_BUF);
+        FONT = Some(file);
+    }
+}
 
 #[no_mangle]
 extern "C" fn render() {
@@ -98,13 +110,13 @@ fn draw_buttons() {
 
 fn draw_combined_buttons() {
     let buttons = read_buttons(Peer::COMBINED);
-    draw_button(S, buttons.s);
-    draw_button(E, buttons.e);
-    draw_button(W, buttons.w);
-    draw_button(N, buttons.n);
+    draw_button(S, "S", buttons.s);
+    draw_button(E, "E", buttons.e);
+    draw_button(W, "W", buttons.w);
+    draw_button(N, "N", buttons.n);
 }
 
-fn draw_button(p: Point, pressed: bool) {
+fn draw_button(p: Point, name: &str, pressed: bool) {
     let style = Style {
         fill_color: Color::White,
         stroke_color: Color::Black,
@@ -123,6 +135,14 @@ fn draw_button(p: Point, pressed: bool) {
         draw_circle(p, TOUCH_RADIUS * 2, shadow);
         draw_circle(p - shift, TOUCH_RADIUS * 2, style);
     }
+    draw_button_name(p - shift, name)
+}
+
+fn draw_button_name(p: Point, name: &str) {
+    let font = unsafe { FONT.as_ref().unwrap() };
+    let font = font.as_font();
+    let text_shift = Point::new(8, 12);
+    draw_text(name, &font, p + text_shift, Color::Black);
 }
 
 fn draw_peer_buttons(peer: Peer, is_me: bool) {
@@ -134,16 +154,20 @@ fn draw_peer_buttons(peer: Peer, is_me: bool) {
         stroke_width: 2,
     };
     if buttons.s {
-        draw_circle(S, TOUCH_RADIUS * 2, style)
+        draw_circle(S, TOUCH_RADIUS * 2, style);
+        draw_button_name(S, "S");
     }
     if buttons.e {
-        draw_circle(E, TOUCH_RADIUS * 2, style)
+        draw_circle(E, TOUCH_RADIUS * 2, style);
+        draw_button_name(E, "E");
     }
     if buttons.w {
-        draw_circle(W, TOUCH_RADIUS * 2, style)
+        draw_circle(W, TOUCH_RADIUS * 2, style);
+        draw_button_name(W, "W");
     }
     if buttons.n {
-        draw_circle(N, TOUCH_RADIUS * 2, style)
+        draw_circle(N, TOUCH_RADIUS * 2, style);
+        draw_button_name(N, "N");
     }
 }
 
