@@ -7,7 +7,7 @@ const TOUCH_RADIUS: i32 = 10;
 
 const ME_COLOR: Color = Color::LightGreen;
 const PEER_COLOR: Color = Color::Green;
-const COMBINED_COLOR: Color = Color::DarkGreen;
+const COMBINED_COLOR: Color = Color::Black;
 
 const S: Point = Point { x: 180, y: 95 };
 const E: Point = Point { x: 200, y: 75 };
@@ -23,12 +23,12 @@ extern "C" fn render() {
 }
 
 fn draw_pad() {
-    draw_combined_pad();
     let me = get_me();
     let peers = get_peers();
     for peer in peers {
         draw_peer_pad(peer, peer == me);
     }
+    draw_combined_pad();
 }
 
 fn draw_combined_pad() {
@@ -36,8 +36,8 @@ fn draw_combined_pad() {
         return;
     };
     let style = Style {
-        fill_color: COMBINED_COLOR,
-        stroke_color: Color::None,
+        fill_color: Color::None,
+        stroke_color: COMBINED_COLOR,
         stroke_width: 2,
     };
     draw_touch(pad, style);
@@ -49,8 +49,8 @@ fn draw_peer_pad(peer: Peer, is_me: bool) {
     };
     let color = if is_me { ME_COLOR } else { PEER_COLOR };
     let style = Style {
-        fill_color: Color::None,
-        stroke_color: color,
+        fill_color: color,
+        stroke_color: Color::LightGray,
         stroke_width: 2,
     };
     draw_touch(pad, style);
