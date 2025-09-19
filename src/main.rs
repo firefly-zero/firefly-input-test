@@ -5,9 +5,9 @@ use firefly_rust::*;
 const PAD_RADIUS: i32 = 60;
 const TOUCH_RADIUS: i32 = 10;
 
-const ME_COLOR: Color = Color::DarkGreen;
+const ME_COLOR: Color = Color::LightGreen;
 const PEER_COLOR: Color = Color::Green;
-const COMBINED_COLOR: Color = Color::LightGreen;
+const COMBINED_COLOR: Color = Color::DarkGreen;
 
 const S: Point = Point { x: 180, y: 95 };
 const E: Point = Point { x: 200, y: 75 };
@@ -18,7 +18,6 @@ const N: Point = Point { x: 180, y: 55 };
 extern "C" fn render() {
     clear_screen(Color::White);
     draw_pad_bg();
-    draw_buttons_bg();
     draw_pad();
     draw_buttons();
 }
@@ -99,31 +98,39 @@ fn draw_buttons() {
 
 fn draw_combined_buttons() {
     let buttons = read_buttons(Peer::COMBINED);
+    draw_button(S, buttons.s);
+    draw_button(E, buttons.e);
+    draw_button(W, buttons.w);
+    draw_button(N, buttons.n);
+}
+
+fn draw_button(p: Point, pressed: bool) {
     let style = Style {
-        fill_color: COMBINED_COLOR,
-        stroke_color: Color::None,
+        fill_color: Color::White,
+        stroke_color: Color::Black,
         stroke_width: 2,
     };
-    if buttons.s {
-        draw_circle(S, TOUCH_RADIUS * 2, style)
-    }
-    if buttons.e {
-        draw_circle(E, TOUCH_RADIUS * 2, style)
-    }
-    if buttons.w {
-        draw_circle(W, TOUCH_RADIUS * 2, style)
-    }
-    if buttons.n {
-        draw_circle(N, TOUCH_RADIUS * 2, style)
+    let shadow = Style {
+        fill_color: Color::Black,
+        stroke_color: Color::Black,
+        stroke_width: 2,
+    };
+    let shift = Point::new(1, 1);
+
+    if pressed {
+        draw_circle(p, TOUCH_RADIUS * 2, style);
+    } else {
+        draw_circle(p, TOUCH_RADIUS * 2, shadow);
+        draw_circle(p - shift, TOUCH_RADIUS * 2, style);
     }
 }
 
 fn draw_peer_buttons(peer: Peer, is_me: bool) {
     let buttons = read_buttons(peer);
-    let stroke_color = if is_me { ME_COLOR } else { PEER_COLOR };
+    let fill_color = if is_me { ME_COLOR } else { PEER_COLOR };
     let style = Style {
-        fill_color: Color::None,
-        stroke_color,
+        fill_color,
+        stroke_color: Color::Black,
         stroke_width: 2,
     };
     if buttons.s {
@@ -148,16 +155,4 @@ fn draw_pad_bg() {
     };
     draw_circle(Point::new(11, 11), PAD_RADIUS * 2, style);
     draw_circle(Point::new(10, 10), PAD_RADIUS * 2, style);
-}
-
-fn draw_buttons_bg() {
-    let style = Style {
-        fill_color: Color::None,
-        stroke_color: Color::Black,
-        stroke_width: 2,
-    };
-    draw_circle(S, TOUCH_RADIUS * 2, style);
-    draw_circle(E, TOUCH_RADIUS * 2, style);
-    draw_circle(W, TOUCH_RADIUS * 2, style);
-    draw_circle(N, TOUCH_RADIUS * 2, style);
 }
