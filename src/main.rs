@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 #![expect(static_mut_refs)]
+#![deny(clippy::pedantic)]
 use firefly_rust::*;
 
 const PAD_RADIUS: i32 = 60;
@@ -18,7 +19,7 @@ const N: Point = Point { x: 180, y: 55 };
 static mut FONT_BUF: [u8; 871] = [0; 871];
 static mut FONT: Option<File<'static>> = None;
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 extern "C" fn boot() {
     unsafe {
         let file = load_file("font", &mut FONT_BUF);
@@ -26,7 +27,7 @@ extern "C" fn boot() {
     }
 }
 
-#[no_mangle]
+#[unsafe(no_mangle)]
 extern "C" fn render() {
     clear_screen(Color::White);
     draw_pad_bg();
@@ -80,7 +81,7 @@ fn draw_touch(pad: Pad, style: Style) {
         stroke_color: Color::None,
         stroke_width: 0,
     };
-    let dpad = pad.as_dpad();
+    let dpad = pad.as_dpad8();
     if dpad.left {
         let point = touch_pos + Point::new(-1, TOUCH_RADIUS - 1);
         draw_rect(point, Size::new(2, 2), style);
@@ -135,7 +136,7 @@ fn draw_button(p: Point, name: &str, pressed: bool) {
         draw_circle(p, TOUCH_RADIUS * 2, shadow);
         draw_circle(p - shift, TOUCH_RADIUS * 2, style);
     }
-    draw_button_name(p - shift, name)
+    draw_button_name(p - shift, name);
 }
 
 fn draw_button_name(p: Point, name: &str) {
