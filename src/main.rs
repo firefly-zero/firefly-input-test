@@ -2,14 +2,11 @@
 #![no_main]
 #![expect(static_mut_refs)]
 #![deny(clippy::pedantic)]
+use core::mem::MaybeUninit;
 use firefly_rust::*;
 
 const PAD_RADIUS: i32 = 60;
 const TOUCH_RADIUS: i32 = 10;
-
-const ME_COLOR: Color = Color::LightGreen;
-const PEER_COLOR: Color = Color::Green;
-const COMBINED_COLOR: Color = Color::Black;
 
 const S: Point = Point { x: 180, y: 95 };
 const E: Point = Point { x: 200, y: 75 };
@@ -17,19 +14,26 @@ const W: Point = Point { x: 160, y: 75 };
 const N: Point = Point { x: 180, y: 55 };
 
 static mut FONT_BUF: [u8; 871] = [0; 871];
-static mut FONT: Option<File<'static>> = None;
+static mut FONT: MaybeUninit<File<'static>> = MaybeUninit::uninit();
+static mut THEME: MaybeUninit<Theme> = MaybeUninit::uninit();
+
+fn get_theme() -> Theme {
+    unsafe { THEME.assume_init() }
+}
 
 #[unsafe(no_mangle)]
 extern "C" fn boot() {
     unsafe {
         let file = load_file("font", &mut FONT_BUF);
-        FONT = Some(file);
+        FONT = MaybeUninit::new(file);
+        let theme = get_settings(get_me()).theme;
+        THEME = MaybeUninit::new(theme);
     }
 }
 
 #[unsafe(no_mangle)]
 extern "C" fn render() {
-    clear_screen(Color::White);
+    clear_screen(get_theme().bg);
     draw_pad_bg();
     draw_pad();
     draw_buttons();
@@ -50,7 +54,7 @@ fn draw_combined_pad() {
     };
     let style = Style {
         fill_color: Color::None,
-        stroke_color: COMBINED_COLOR,
+        stroke_color: get_theme().primary,
         stroke_width: 2,
     };
     draw_touch(pad, style);
@@ -60,10 +64,11 @@ fn draw_peer_pad(peer: Peer, is_me: bool) {
     let Some(pad) = read_pad(peer) else {
         return;
     };
-    let color = if is_me { ME_COLOR } else { PEER_COLOR };
+    let theme = get_theme();
+    let color = if is_me { theme.accent } else { theme.primary };
     let style = Style {
         fill_color: color,
-        stroke_color: Color::LightGray,
+        stroke_color: theme.secondary,
         stroke_width: 2,
     };
     draw_touch(pad, style);
@@ -77,7 +82,7 @@ fn draw_touch(pad: Pad, style: Style) {
     draw_circle(touch_pos, TOUCH_RADIUS * 2, style);
 
     let style = Style {
-        fill_color: Color::White,
+        fill_color: get_theme().bg,
         stroke_color: Color::None,
         stroke_width: 0,
     };
@@ -118,14 +123,15 @@ fn draw_combined_buttons() {
 }
 
 fn draw_button(p: Point, name: &str, pressed: bool) {
+    let theme = get_theme();
     let style = Style {
-        fill_color: Color::White,
-        stroke_color: Color::Black,
+        fill_color: theme.bg,
+        stroke_color: theme.primary,
         stroke_width: 2,
     };
     let shadow = Style {
-        fill_color: Color::Black,
-        stroke_color: Color::Black,
+        fill_color: theme.primary,
+        stroke_color: theme.primary,
         stroke_width: 2,
     };
     let shift = Point::new(1, 1);
@@ -140,18 +146,19 @@ fn draw_button(p: Point, name: &str, pressed: bool) {
 }
 
 fn draw_button_name(p: Point, name: &str) {
-    let font = unsafe { FONT.as_ref().unwrap() };
+    let font = unsafe { FONT.assume_init_mut() };
     let font = font.as_font();
     let text_shift = Point::new(8, 12);
-    draw_text(name, &font, p + text_shift, Color::Black);
+    draw_text(name, &font, p + text_shift, get_theme().primary);
 }
 
 fn draw_peer_buttons(peer: Peer, is_me: bool) {
     let buttons = read_buttons(peer);
-    let fill_color = if is_me { ME_COLOR } else { PEER_COLOR };
+    let theme = get_theme();
+    let fill_color = if is_me { theme.accent } else { theme.primary };
     let style = Style {
         fill_color,
-        stroke_color: Color::Black,
+        stroke_color: theme.primary,
         stroke_width: 2,
     };
     if buttons.s {
@@ -173,9 +180,10 @@ fn draw_peer_buttons(peer: Peer, is_me: bool) {
 }
 
 fn draw_pad_bg() {
+    let theme = get_theme();
     let style = Style {
-        fill_color: Color::White,
-        stroke_color: Color::Black,
+        fill_color: theme.bg,
+        stroke_color: theme.primary,
         stroke_width: 2,
     };
     draw_circle(Point::new(11, 11), PAD_RADIUS * 2, style);

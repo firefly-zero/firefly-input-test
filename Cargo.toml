@@ -12,3 +12,6 @@ firefly-rust = "0.11.0"
 strip = true    # Automatically strip symbols from the binary.
 opt-level = "z" # Optimize for size.
 lto = true      # Enable link-time optimization
+
+[patch.crates-io]
+firefly-rust = { path = "../firefly-rust" }
