@@ -2,6 +2,8 @@
 #![no_main]
 #![expect(static_mut_refs)]
 #![deny(clippy::pedantic)]
+#![allow(clippy::wildcard_imports)]
+
 use core::mem::MaybeUninit;
 use firefly_rust::*;
 
