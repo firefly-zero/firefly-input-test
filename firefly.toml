@@ -2,6 +2,7 @@ author_id = "sys"
 app_id = "input-test"
 author_name = "System"
 app_name = "Input test"
+lang = "rust"
 
 [files]
 font = { url = "https://fonts.fireflyzero.com/fonts/ascii/eg_6x12.fff", path = "eg6x12.fff" }
