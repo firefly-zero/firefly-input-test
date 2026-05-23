@@ -16,7 +16,7 @@ const W: Point = Point { x: 160, y: 75 };
 const N: Point = Point { x: 180, y: 55 };
 
 static mut FONT_BUF: [u8; 871] = [0; 871];
-static mut FONT: MaybeUninit<File<'static>> = MaybeUninit::uninit();
+static mut FONT: MaybeUninit<FontRef<'static>> = MaybeUninit::uninit();
 static mut THEME: MaybeUninit<Theme> = MaybeUninit::uninit();
 
 fn get_theme() -> Theme {
@@ -27,7 +27,7 @@ fn get_theme() -> Theme {
 extern "C" fn boot() {
     unsafe {
         let file = load_file("font", &mut FONT_BUF);
-        FONT = MaybeUninit::new(file);
+        FONT = MaybeUninit::new(file.into());
         let theme = get_settings(get_me()).theme;
         THEME = MaybeUninit::new(theme);
     }
@@ -149,9 +149,8 @@ fn draw_button(p: Point, name: &str, pressed: bool) {
 
 fn draw_button_name(p: Point, name: &str) {
     let font = unsafe { FONT.assume_init_mut() };
-    let font = font.as_font();
     let text_shift = Point::new(8, 12);
-    draw_text(name, &font, p + text_shift, get_theme().primary);
+    draw_text(name, font, p + text_shift, get_theme().primary);
 }
 
 fn draw_peer_buttons(peer: Peer, is_me: bool) {
